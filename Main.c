@@ -17,13 +17,13 @@ typedef struct {
 typedef struct {
 	eqSimplex_t item;
 	eqSimplex_t* next;
-} node_t; // estrutura de nó da lista
+} node_t; // estrutura de nÃ³ da lista
 
 typedef struct {
 	node_t* inicio;
 	node_t* fim;
 	int count;
-} lista_t; // cabeça da lista
+} lista_t; // cabeÃ§a da lista
 
 typedef struct {
 	lista_t lstEquacoes;
@@ -38,7 +38,7 @@ void lstInit(lista_t* lst) // inicia uma nova lista
 	lst->fim = NULL;
 }
 
-void lstAdd(lista_t* lst, eqSimplex_t item) // adiciona um nó a lista com o valor do item
+void lstAdd(lista_t* lst, eqSimplex_t item) // adiciona um nÃ³ a lista com o valor do item
 {
 	node_t* node = malloc(sizeof(node_t));
 	node->item = item;
@@ -51,7 +51,7 @@ void lstAdd(lista_t* lst, eqSimplex_t item) // adiciona um nó a lista com o valo
 	lst->count++;
 }
 
-void lstFree(lista_t* lst) // limpa memoria alocada para os nós da lista
+void lstFree(lista_t* lst) // limpa memoria alocada para os nÃ³s da lista
 {
 	int i;
 	node_t* temp;
@@ -91,7 +91,7 @@ void printEq(simplex_t s, eqSimplex_t eq) // imprime uma linha especifica da tab
 	printf("%lf\n", eq.termo);
 }
 
-void adjustsInsertEq(simplex_t* s, eqSimplex_t* eq) // ajusta as equações para <= e as adiciona na lista
+void adjustsInsertEq(simplex_t* s, eqSimplex_t* eq) // ajusta as equaÃ§Ãµes para <= e as adiciona na lista
 {
 	int i;
 	if (strcmp(eq->tp, "<=") == 0)
@@ -116,7 +116,7 @@ void adjustsInsertEq(simplex_t* s, eqSimplex_t* eq) // ajusta as equações para <
 	}
 }
 
-void addFolga(simplex_t* s) // adiciona as variaveis de folga em cada equação
+void addFolga(simplex_t* s) // adiciona as variaveis de folga em cada equaÃ§Ã£o
 {
 	node_t * eq = s->lstEquacoes.inicio;
 	int i, j;
@@ -135,9 +135,9 @@ bool needAdjust(simplex_t* s) // verifica se o quadro simplex precisa ser normal
 {
 	int i;
 	node_t* eq = s->lstEquacoes.inicio;
-	for (i = 0; i < s->lstEquacoes.count; i++) // percorre todas as equações
+	for (i = 0; i < s->lstEquacoes.count; i++) // percorre todas as equaÃ§Ãµes
 	{
-		if (eq->item.termo < 0) return true; // se algum termo esta negativo retorna verdade (é necessario a normalizar o quadro)
+		if (eq->item.termo < 0) return true; // se algum termo esta negativo retorna verdade (Ã© necessario a normalizar o quadro)
 		eq = eq->next;
 	}
 	return false;
@@ -189,7 +189,7 @@ void simplexAdjust(simplex_t* s) // normaliza o quadro simplex
 	node_t* eq = s->lstEquacoes.inicio; // pega a primeira linha
 	for (i = 0; i < s->lstEquacoes.count; i++) // percorre todas as linhas
 	{
-		if (i != rowP) // se for a linha pivo não faz calculos somente pula para a proxima linha
+		if (i != rowP) // se for a linha pivo nÃ£o faz calculos somente pula para a proxima linha
 		{
 			double pivoL = eq->item.x[colP]; // pega o elemento da coluna pivo dessa linha
 			for (j = 0; j < s->qtdVar + s->qtdRest; j++)
@@ -214,7 +214,7 @@ void simplexSolve(simplex_t* s) // resolve o quadro simplex
 	int i, j;
 	double menorZ = 0; //menor valor de Z
 	int colZ; // coluna mais negativa de Z (coluna pivo)
-	node_t* z = s->lstEquacoes.fim; // objetivo (Z) é sempre o ultimo elemento da lista
+	node_t* z = s->lstEquacoes.fim; // objetivo (Z) Ã© sempre o ultimo elemento da lista
 	
 	for (i = 0; i < s->qtdVar + s->qtdRest; i++) // percorre todas as variaveis de Z
 	{
@@ -226,7 +226,7 @@ void simplexSolve(simplex_t* s) // resolve o quadro simplex
 	}
 
 	
-	if (menorZ >= 0) return; // condição de parada
+	if (menorZ >= 0) return; // condiÃ§Ã£o de parada
 
 	node_t* eq = s->lstEquacoes.inicio; // pega a primeira linha
 	double melhorPivo = DBL_MAX;
@@ -261,7 +261,7 @@ void simplexSolve(simplex_t* s) // resolve o quadro simplex
 	eq = s->lstEquacoes.inicio; // pega a primeira linha
 	for (i = 0; i < s->lstEquacoes.count; i++) // percorre todas as linhas
 	{
-		if (i != rowP) // se for a linha pivo não faz calculos somente pula para a proxima linha
+		if (i != rowP) // se for a linha pivo nÃ£o faz calculos somente pula para a proxima linha
 		{
 			double pivoL = eq->item.x[colZ]; // pega o elemento da coluna pivo dessa linha
 			for (j = 0; j < s->qtdVar + s->qtdRest; j++)
@@ -274,7 +274,7 @@ void simplexSolve(simplex_t* s) // resolve o quadro simplex
 	}
 
 	
-	simplexSolve(s); // proxima interação
+	simplexSolve(s); // proxima interaÃ§Ã£o
 }
 
 void saveFileB(simplex_t s, char * fName) // salva os dados no formato binario
@@ -308,114 +308,10 @@ void loadFileB(simplex_t* s, char * fName) // carrega os dados no formato binari
 
 int main()
 {
-	int i, j;
 	simplex_t s;
 	lstInit(&s.lstEquacoes);
-	int option;
-
-	do {
-		printf("-MENU-\n");
-		printf("1 - Entrada manual\n");
-		printf("2 - Entrada via arquivo\n");
-		printf("3 - Sair\n");
-		printf("Entre com a opcao: ");
-		scanf("%d", &option);
-
-		switch (option)
-		{
-		case 1:
-			printf("Quantas variaveis (maximo 20)? ");
-			scanf("%d", &s.qtdVar);
-			printf("Quantas restricoes (maximo 20)? ");
-			scanf("%d", &s.qtdRest);
-			printf("Tipo de problema (Max/Min): ");
-			char tpProblema[4];
-			scanf("%s[^\n]", &tpProblema);
-			int restricoes = s.qtdRest;
-			for (i = 0; i < restricoes; i++)
-			{
-				eqSimplex_t eq;
-				printf("Restricao %d\n", i + 1);
-				for (j = 0; j < s.qtdVar; j++)
-				{	
-					printf("Coeficiente  da variavel x%d: ", j);
-					scanf("%lf", &eq.x[j]);
-				}
-				printf("Tipo de restricao: ");
-				scanf("%s[^\n]", eq.tp);
-				printf("Termo independente: ");
-				scanf("%lf", &eq.termo);
-				adjustsInsertEq(&s, &eq);
-			}
-			
-			eqSimplex_t objetivo;
-			printf("Funcao objetivo\n");
-			for (i = 0; i < s.qtdVar; i++)
-			{
-				printf("Coeficiente  da variavel x%d: ", i);
-				scanf("%lf", &objetivo.x[i]);
-			}
-
-			if (strcmp(tpProblema, "Max") == 0)
-			{
-				for (i = 0; i < s.qtdVar; i++) objetivo.x[i] *= -1;
-			}
-
-			strcpy(objetivo.tp, "<=");
-			objetivo.termo = 0;
-			adjustsInsertEq(&s, &objetivo);
-
-
-			printf("Deseja salvar essa entrada em um arquivo externo (S/N)? ");
-			scanf("%s[^\n]", tpProblema);
-			if (tpProblema[0] == 'S')
-			{
-				printf("Entre com o nome do arquivo: ");
-				char fName[255];
-				scanf("%s[^\n]", fName);
-				saveFileB(s, fName);
-			}
-
-			// resolução
-			addFolga(&s); // adiciona variaveis de folga
-
-			simplexPrint(s);
-			printf("\n");
-			simplexSolve(&s);
-			printf("\n");
-			simplexPrint(s);
-			printf("\n");
-
-			lstFree(&s.lstEquacoes); // limpa memoria alocada
-
-			break;
-		case 2:
-			printf("Entre com o nome do arquivo: ");
-			char fName[255];
-			scanf("%s[^\n]", fName);
-			loadFileB(&s, fName);
-
-			addFolga(&s); // adiciona variaveis de folga
-
-			simplexPrint(s);
-			printf("\n");
-			simplexSolve(&s);
-			printf("\n");
-			simplexPrint(s);
-			printf("\n");
-
-			lstFree(&s.lstEquacoes); // limpa memoria alocada
-			break;
-		case 3:
-			break;
-		default:
-			printf("Opcao invalida!\n");
-			break;
-		}
-	} while (option != 3);
-
 	
-	/*eqSimplex_t eqRest1 = { {10.0, 200.0}, "==", 10000.0 };
+	eqSimplex_t eqRest1 = { {10.0, 200.0}, "==", 10000.0 };
 	eqSimplex_t eqRest2 = { { 1.0, -5.0 }, ">=", 0.0 };
 	eqSimplex_t eqRest3 = { { 1.0, 0.0}, "<=", 400.0 };
 	eqSimplex_t eqObjetivo = { { -1.0, -25.0 }, "<=", 00.0 };
@@ -425,10 +321,10 @@ int main()
 	adjustsInsertEq(&s, &eqRest3);
 	adjustsInsertEq	(&s, &eqObjetivo);*/
 
-/*	saveFileB(s, "simplex.bin");
+	saveFileB(s, "simplex.bin");
 	lstFree(&s.lstEquacoes);
 	lstInit(&s.lstEquacoes);
-	loadFileB(&s, "simplex.bin");*/
+	loadFileB(&s, "simplex.bin");
 
 
 	system("pause");
